@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite Jamón Carving · New York & New Jersey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Libre+Baskerville:ital@0;1&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: #8A6E32;
+    --cream: #F5EFE0;
+    --cream-dim: #D6CBAF;
+    --ink: #0D0B08;
+    --ink-soft: #1A1710;
+    --ink-mid: #2C2820;
+    --text-muted: #8A7E68;
+    --border: rgba(201,168,76,0.18);
+    --border-strong: rgba(201,168,76,0.38);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--ink);
+    color: var(--cream);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.45;
+  }
+
+  /* ── GOLD GRAIN TOP LINE ── */
+  .top-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 100%);
+  }
+
+  /* ── WRAPPER ── */
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 52px 0 36px;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .hero-knife {
+    font-size: 36px;
+    margin-bottom: 14px;
+    display: block;
+    filter: sepia(1) saturate(1.8) hue-rotate(10deg);
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 9vw, 54px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 24px;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .hero-divider-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dim));
+  }
+  .hero-divider-line.r { background: linear-gradient(90deg, var(--gold-dim), transparent); }
+  .hero-divider-icon {
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 3px;
+  }
+
+  .hero-location {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ── BOOK NOW (primary CTA) ── */
+  .cta-primary {
+    display: block;
+    background: linear-gradient(135deg, var(--gold-dim) 0%, var(--gold) 50%, var(--gold-light) 100%);
+    color: var(--ink);
+    text-decoration: none;
+    text-align: center;
+    padding: 17px 24px;
+    border-radius: 2px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    margin: 0 0 32px;
+    transition: opacity 0.2s, transform 0.15s;
+    animation: fadeUp 0.9s 0.15s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.12);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .cta-primary:hover::after { opacity: 1; }
+  .cta-primary:active { transform: scale(0.98); }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  /* ── SERVICE CARDS ── */
+  .services {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.9s 0.25s ease both;
+  }
+
+  .service-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--ink-soft);
+    border: 0.5px solid var(--border);
+    padding: 18px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+  .service-card:first-child { border-radius: 2px 2px 0 0; }
+  .service-card:last-child  { border-radius: 0 0 2px 2px; }
+  .service-card:hover {
+    background: var(--ink-mid);
+    border-color: var(--border-strong);
+  }
+
+  .service-icon {
+    font-size: 22px;
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+    filter: sepia(0.6) saturate(1.4) hue-rotate(8deg);
+  }
+
+  .service-text { flex: 1; }
+
+  .service-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  .service-desc {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .service-arrow {
+    color: var(--gold-dim);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ── ABOUT STRIP ── */
+  .about {
+    border-top: 0.5px solid var(--border);
+    border-bottom: 0.5px solid var(--border);
+    padding: 28px 0;
+    margin-bottom: 40px;
+    text-align: center;
+    animation: fadeUp 0.9s 0.35s ease both;
+  }
+
+  .about-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--cream-dim);
+    line-height: 1.55;
+    margin-bottom: 16px;
+    letter-spacing: 0.02em;
+  }
+
+  .about-quote strong {
+    color: var(--gold-light);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  .about-facts {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .fact { text-align: center; }
+  .fact-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+  }
+  .fact-label {
+    font-size: 8px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ── WHAT MAKES IT SPECIAL ── */
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.9s 0.4s ease both;
+  }
+
+  .pillar {
+    background: var(--ink-soft);
+    border: 0.5px solid var(--border);
+    padding: 20px 16px;
+    border-radius: 2px;
+  }
+
+  .pillar-icon { font-size: 20px; margin-bottom: 10px; display: block; }
+  .pillar-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 5px;
+  }
+  .pillar-text {
+    font-size: 10px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── SOCIAL LINKS ── */
+  .social {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.9s 0.45s ease both;
+  }
+
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--ink-soft);
+    border: 0.5px solid var(--border);
+    padding: 15px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s, border-color 0.2s;
+    border-radius: 2px;
+  }
+  .social-link:hover {
+    background: var(--ink-mid);
+    border-color: var(--border-strong);
+  }
+  .social-icon { font-size: 18px; width: 28px; text-align: center; flex-shrink: 0; }
+  .social-name {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--cream-dim);
+    flex: 1;
+  }
+  .social-handle {
+    font-size: 10px;
+    color: var(--gold-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── CONTACT / EMAIL ── */
+  .contact-block {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeUp 0.9s 0.5s ease both;
+  }
+
+  .contact-email {
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gold-dim);
+    padding-bottom: 2px;
+    margin-bottom: 8px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .contact-email:hover { color: var(--gold-light); border-color: var(--gold-light); }
+  .contact-note { font-size: 10px; color: var(--text-muted); letter-spacing: 0.08em; }
+
+  /* ── AVAILABILITY BADGE ── */
+  .avail-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.9s 0.55s ease both;
+  }
+  .avail-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76,175,80,0.25);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  .avail-text {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #4CAF50;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    animation: fadeUp 0.9s 0.6s ease both;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gold-dim);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .footer-copy {
+    font-size: 9px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    opacity: 0.6;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse-dot {
+    0%, 100% { box-shadow: 0 0 0 2px rgba(76,175,80,0.25); }
+    50%       { box-shadow: 0 0 0 5px rgba(76,175,80,0.1); }
+  }
+
+  @media (max-width: 380px) {
+    .hero-name { font-size: 34px; }
+    .pillars { grid-template-columns: 1fr; }
+    .about-facts { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-line"></div>
+
+<div class="wrapper">
+
+  <!-- HERO -->
+  <header class="hero">
+    <p class="hero-eyebrow">Maestro Cortador · Since 2020</p>
+    <span class="hero-knife">🔪</span>
+    <h1 class="hero-name">Elite<br><em>Jamón Carving</em></h1>
+    <p class="hero-tagline">The art of Ibérico · New York & New Jersey</p>
+    <div class="hero-divider">
+      <div class="hero-divider-line"></div>
+      <span class="hero-divider-icon">✦ ✦ ✦</span>
+      <div class="hero-divider-line r"></div>
+    </div>
+    <p class="hero-location">📍 Serving NY · NJ · Nationwide on request</p>
+  </header>
+
+  <!-- AVAILABILITY -->
+  <div class="avail-badge">
+    <div class="avail-dot"></div>
+    <span class="avail-text">Accepting bookings for 2025 &amp; 2026</span>
+  </div>
+
+  <!-- PRIMARY CTA -->
+  <a href="mailto:info@elitejamoncarving.com" class="cta-primary">
+    ✦ &nbsp; Book Your Event &nbsp; ✦
+  </a>
+
+  <!-- SERVICES -->
+  <p class="section-label">— Services —</p>
+  <div class="services">
+    <div class="service-card">
+      <span class="service-icon">🥩</span>
+      <div class="service-text">
+        <div class="service-name">Live Carving at Events</div>
+        <div class="service-desc">An unforgettable live performance — Jamón Ibérico de Bellota carved tableside</div>
+      </div>
+      <span class="service-arrow">›</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💍</span>
+      <div class="service-text">
+        <div class="service-name">Weddings</div>
+        <div class="service-desc">The most elegant addition to your cocktail hour or reception</div>
+      </div>
+      <span class="service-arrow">›</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏢</span>
+      <div class="service-text">
+        <div class="service-name">Corporate Events</div>
+        <div class="service-desc">Impress clients and teams with an authentic Spanish luxury experience</div>
+      </div>
+      <span class="service-arrow">›</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">📦</span>
+      <div class="service-text">
+        <div class="service-name">Vacuum-Packed Delivery</div>
+        <div class="service-desc">Hand-carved &amp; vacuum-sealed Ibérico delivered to your door in NY/NJ</div>
+      </div>
+      <span class="service-arrow">›</span>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">👨‍🏫</span>
+      <div class="service-text">
+        <div class="service-name">Private Training</div>
+        <div class="service-desc">Learn the art of Jamón carving — for chefs, enthusiasts &amp; hospitality staff</div>
+      </div>
+      <span class="service-arrow">›</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="about">
+    <p class="about-quote">
+      "Jamón Ibérico de Bellota is one of the<br>
+      <strong>world's most extraordinary foods.</strong><br>
+      We bring the full Spanish experience to your table."
+    </p>
+    <div class="about-facts">
+      <div class="fact">
+        <span class="fact-num">36+</span>
+        <span class="fact-label">months cured</span>
+      </div>
+      <div class="fact">
+        <span class="fact-num">100%</span>
+        <span class="fact-label">Ibérico Bellota</span>
+      </div>
+      <div class="fact">
+        <span class="fact-num">NYC</span>
+        <span class="fact-label">based · USA</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLARS -->
+  <p class="section-label">— Why Elite Jamón —</p>
+  <div class="pillars">
+    <div class="pillar">
+      <span class="pillar-icon">🎖️</span>
+      <div class="pillar-title">Master Carver</div>
+      <p class="pillar-text">Certified technique, years of experience cutting the world's finest hams</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">✈️</span>
+      <div class="pillar-title">Nationwide</div>
+      <p class="pillar-text">Based in NY/NJ, available for events across the US</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">🍷</span>
+      <div class="pillar-title">Full Experience</div>
+      <p class="pillar-text">Jamón, carving stand, knives, serving plates — we bring everything</p>
+    </div>
+    <div class="pillar">
+      <span class="pillar-icon">📸</span>
+      <div class="pillar-title">Visual Wow</div>
+      <p class="pillar-text">Your guests will be filming. Guaranteed content for the night</p>
+    </div>
+  </div>
+
+  <!-- SOCIAL -->
+  <p class="section-label">— Follow the journey —</p>
+  <div class="social">
+    <a href="https://instagram.com/elitejamoncarving" class="social-link" target="_blank" rel="noopener">
+      <span class="social-icon">📸</span>
+      <span class="social-name">Instagram</span>
+      <span class="social-handle">@elitejamoncarving</span>
+    </a>
+    <a href="https://tiktok.com/@elitejamoncarving" class="social-link" target="_blank" rel="noopener">
+      <span class="social-icon">🎵</span>
+      <span class="social-name">TikTok</span>
+      <span class="social-handle">@elitejamoncarving</span>
+    </a>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="contact-block">
+    <p class="section-label" style="margin-bottom:16px;">— Get in touch —</p>
+    <a href="mailto:info@elitejamoncarving.com" class="contact-email">info@elitejamoncarving.com</a>
+    <p class="contact-note">DM on Instagram · or email for availability & pricing</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="hero-divider" style="margin-bottom:16px;">
+      <div class="hero-divider-line"></div>
+      <span class="hero-divider-icon" style="font-size:10px; color:var(--gold-dim);">✦</span>
+      <div class="hero-divider-line r"></div>
+    </div>
+    <p class="footer-logo">Elite Jamón Carving</p>
+    <p class="footer-copy">New York · New Jersey · United States</p>
+  </footer>
+
+</div>
+</body>
+</html>
